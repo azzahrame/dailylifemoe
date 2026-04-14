@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 25.8.4.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { margin-bottom: 0.1in; line-height: 115%; background: transparent }
+		pre { font-size: 10pt; font-family: "Liberation Mono", monospace; background: transparent }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre>```html
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot; class=&quot;light&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Moe's Space - Daily Planner&lt;/title&gt;
+    
+    &lt;!-- Google Fonts: Plus Jakarta Sans for clean, aesthetic look --&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+    
+    &lt;!-- Phosphor Icons --&gt;
+    &lt;script src=&quot;https://unpkg.com/@phosphor-icons/web&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- Tailwind CSS --&gt;
+    &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['&quot;Plus Jakarta Sans&quot;', 'sans-serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            300: '#d6d3d1',
+                            400: '#a8a29e',
+                            500: '#78716c',
+                            600: '#57534e',
+                            700: '#44403c',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    &lt;/script&gt;
+    
+    &lt;style type=&quot;text/tailwindcss&quot;&gt;
+        @layer utilities {
+            .glass-card {
+                @apply bg-white/70 dark:bg-[#1c1917]/70 backdrop-blur-md border border-stone-200 dark:border-stone-800 shadow-sm rounded-3xl;
+            }
+            .input-field {
+                @apply w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-2 focus:outline-none focus:border-stone-800 dark:focus:border-stone-300 transition-colors text-stone-800 dark:text-stone-100 placeholder-stone-400;
+            }
+            .btn-primary {
+                @apply bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 px-6 py-2.5 rounded-full font-medium hover:bg-stone-800 dark:hover:bg-stone-200 transition-all active:scale-95 flex items-center justify-center gap-2;
+            }
+            
+            /* Custom Scrollbar */
+            ::-webkit-scrollbar {
+                width: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                @apply bg-stone-300 dark:bg-stone-700 rounded-full;
+            }
+        }
+
+        body {
+            @apply bg-[#F4F4F2] dark:bg-[#121110] transition-colors duration-500 min-h-screen text-stone-800 dark:text-stone-200;
+            background-image: radial-gradient(circle at 50% 0%, rgba(120, 113, 108, 0.05) 0%, transparent 50%);
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;antialiased p-4 md:p-8 selection:bg-stone-300 selection:text-stone-900 dark:selection:bg-stone-700 dark:selection:text-stone-100&quot;&gt;
+
+    &lt;div class=&quot;max-w-6xl mx-auto&quot;&gt;
+        &lt;!-- Header --&gt;
+        &lt;header class=&quot;flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4&quot;&gt;
+            &lt;div&gt;
+                &lt;h1 class=&quot;text-3xl md:text-4xl font-bold tracking-tight mb-1&quot;&gt;Halo, Moe! ✨&lt;/h1&gt;
+                &lt;p class=&quot;text-stone-500 dark:text-stone-400 font-medium&quot; id=&quot;current-date&quot;&gt;Memuat tanggal...&lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;flex items-center gap-4&quot;&gt;
+                &lt;div class=&quot;glass-card px-4 py-2 font-mono text-sm tracking-widest hidden md:block&quot; id=&quot;live-clock&quot;&gt;
+                    00:00
+                &lt;/div&gt;
+                &lt;button onclick=&quot;toggleTheme()&quot; class=&quot;glass-card p-3 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors&quot; aria-label=&quot;Toggle Dark Mode&quot;&gt;
+                    &lt;i class=&quot;ph ph-moon text-xl block dark:hidden&quot;&gt;&lt;/i&gt;
+                    &lt;i class=&quot;ph ph-sun text-xl hidden dark:block text-yellow-100&quot;&gt;&lt;/i&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;!-- Main Content Grid --&gt;
+        &lt;div class=&quot;grid grid-cols-1 lg:grid-cols-12 gap-8&quot;&gt;
+            
+            &lt;!-- Left Column: Daily Planner (Span 7) --&gt;
+            &lt;div class=&quot;lg:col-span-7 space-y-6&quot;&gt;
+                
+                &lt;!-- Add Task Form --&gt;
+                &lt;div class=&quot;glass-card p-6 md:p-8&quot;&gt;
+                    &lt;h2 class=&quot;text-xl font-semibold mb-6 flex items-center gap-2&quot;&gt;
+                        &lt;i class=&quot;ph ph-calendar-plus text-stone-500&quot;&gt;&lt;/i&gt; Tambah Jadwal Baru
+                    &lt;/h2&gt;
+                    
+                    &lt;form id=&quot;task-form&quot; class=&quot;space-y-5&quot;&gt;
+                        &lt;div class=&quot;grid grid-cols-1 md:grid-cols-3 gap-5&quot;&gt;
+                            &lt;div class=&quot;md:col-span-2&quot;&gt;
+                                &lt;label class=&quot;text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1 block&quot;&gt;Kegiatan&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; id=&quot;task-name&quot; class=&quot;input-field&quot; placeholder=&quot;Cth: Ngopi sambil baca buku...&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div&gt;
+                                &lt;label class=&quot;text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1 block&quot;&gt;Waktu&lt;/label&gt;
+                                &lt;input type=&quot;time&quot; id=&quot;task-time&quot; class=&quot;input-field&quot; required&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class=&quot;flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-2&quot;&gt;
+                            &lt;div class=&quot;w-full md:w-auto&quot;&gt;
+                                &lt;label class=&quot;text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1 block&quot;&gt;Kategori&lt;/label&gt;
+                                &lt;select id=&quot;task-category&quot; class=&quot;input-field cursor-pointer&quot;&gt;
+                                    &lt;option value=&quot;Rutinitas&quot;&gt;Rutinitas&lt;/option&gt;
+                                    &lt;option value=&quot;Hobi&quot;&gt;Hobi&lt;/option&gt;
+                                    &lt;option value=&quot;Kerja&quot;&gt;Kerja / Belajar&lt;/option&gt;
+                                    &lt;option value=&quot;Me Time&quot;&gt;Me Time&lt;/option&gt;
+                                    &lt;option value=&quot;Lainnya&quot;&gt;Lainnya&lt;/option&gt;
+                                &lt;/select&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn-primary w-full md:w-auto mt-4 md:mt-0&quot;&gt;
+                                &lt;i class=&quot;ph ph-plus-circle text-lg&quot;&gt;&lt;/i&gt; Tambahkan
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Task List --&gt;
+                &lt;div&gt;
+                    &lt;h3 class=&quot;text-sm font-bold text-stone-500 uppercase tracking-widest mb-4 ml-2&quot;&gt;Jadwal Hari Ini&lt;/h3&gt;
+                    &lt;div id=&quot;task-container&quot; class=&quot;space-y-3&quot;&gt;
+                        &lt;!-- Tasks will be injected here --&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Right Column: Special Moments (Span 5) --&gt;
+            &lt;div class=&quot;lg:col-span-5 space-y-6&quot;&gt;
+                
+                &lt;!-- Add Moment Form --&gt;
+                &lt;div class=&quot;glass-card p-6 md:p-8 relative overflow-hidden&quot;&gt;
+                    &lt;!-- Decorative element --&gt;
+                    &lt;div class=&quot;absolute -right-6 -top-6 w-24 h-24 bg-stone-200 dark:bg-stone-800 rounded-full blur-2xl opacity-50&quot;&gt;&lt;/div&gt;
+                    
+                    &lt;h2 class=&quot;text-xl font-semibold mb-6 flex items-center gap-2 relative z-10&quot;&gt;
+                        &lt;i class=&quot;ph ph-sparkle text-stone-500&quot;&gt;&lt;/i&gt; Momen Spesial
+                    &lt;/h2&gt;
+                    
+                    &lt;form id=&quot;moment-form&quot; class=&quot;relative z-10&quot;&gt;
+                        &lt;textarea id=&quot;moment-text&quot; rows=&quot;3&quot; class=&quot;input-field resize-none&quot; placeholder=&quot;Ada kejadian menarik atau pikiran apa hari ini, Moe?&quot; required&gt;&lt;/textarea&gt;
+                        &lt;div class=&quot;flex justify-end mt-4&quot;&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;text-sm font-semibold bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 px-4 py-2 rounded-full transition-colors flex items-center gap-2&quot;&gt;
+                                Simpan &lt;i class=&quot;ph ph-paper-plane-right&quot;&gt;&lt;/i&gt;
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Moments List --&gt;
+                &lt;div&gt;
+                    &lt;h3 class=&quot;text-sm font-bold text-stone-500 uppercase tracking-widest mb-4 ml-2&quot;&gt;Jejak Hari Ini&lt;/h3&gt;
+                    &lt;div id=&quot;moment-container&quot; class=&quot;space-y-4&quot;&gt;
+                        &lt;!-- Moments will be injected here --&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Application Logic --&gt;
+    &lt;script&gt;
+        // --- State Management (In-Memory for single session) ---
+        let tasks = [];
+        let moments = [];
+
+        // --- Theme Management ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+            } else {
+                html.classList.add('dark');
+            }
+        }
+
+        // --- Time &amp; Date Functions ---
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Date formatting
+            const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').innerText = now.toLocaleDateString('id-ID', optionsDate);
+            
+            // Time formatting
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('live-clock').innerText = `${hours}:${minutes}`;
+        }
+        
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Initial call
+
+        // --- Task Management ---
+        const taskForm = document.getElementById('task-form');
+        const taskContainer = document.getElementById('task-container');
+
+        taskForm.addEventListener('submit', (e) =&gt; {
+            e.preventDefault();
+            const name = document.getElementById('task-name').value;
+            const time = document.getElementById('task-time').value;
+            const category = document.getElementById('task-category').value;
+
+            const newTask = {
+                id: Date.now().toString(),
+                name,
+                time,
+                category,
+                completed: false
+            };
+
+            tasks.push(newTask);
+            // Sort tasks by time
+            tasks.sort((a, b) =&gt; a.time.localeCompare(b.time));
+            
+            renderTasks();
+            taskForm.reset();
+        });
+
+        function toggleTaskComplete(id) {
+            const task = tasks.find(t =&gt; t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t =&gt; t.id !== id);
+            renderTasks();
+        }
+
+        function getCategoryColor(category) {
+            switch(category) {
+                case 'Rutinitas': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800';
+                case 'Hobi': return 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 border-orange-200 dark:border-orange-800';
+                case 'Me Time': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border-purple-200 dark:border-purple-800';
+                case 'Kerja': return 'bg-stone-200 text-stone-700 dark:bg-stone-800 dark:text-stone-300 border-stone-300 dark:border-stone-700';
+                default: return 'bg-stone-100 text-stone-600 dark:bg-stone-800/50 dark:text-stone-400 border-stone-200 dark:border-stone-700';
+            }
+        }
+
+        function renderTasks() {
+            if (tasks.length === 0) {
+                taskContainer.innerHTML = `
+                    &lt;div class=&quot;text-center py-8 px-4 border border-dashed border-stone-300 dark:border-stone-700 rounded-3xl&quot;&gt;
+                        &lt;i class=&quot;ph ph-coffee text-4xl text-stone-300 dark:text-stone-600 mb-2&quot;&gt;&lt;/i&gt;
+                        &lt;p class=&quot;text-stone-500 dark:text-stone-400 text-sm&quot;&gt;Belum ada jadwal. Yuk rencanakan hari ini!&lt;/p&gt;
+                    &lt;/div&gt;
+                `;
+                return;
+            }
+
+            taskContainer.innerHTML = tasks.map(task =&gt; `
+                &lt;div class=&quot;glass-card p-4 flex items-center gap-4 group hover:shadow-md transition-shadow&quot;&gt;
+                    &lt;button onclick=&quot;toggleTaskComplete('${task.id}')&quot; class=&quot;flex-shrink-0 w-6 h-6 rounded-full border-2 ${task.completed ? 'bg-stone-800 border-stone-800 dark:bg-stone-200 dark:border-stone-200 text-white dark:text-stone-900' : 'border-stone-400 dark:border-stone-500'} flex items-center justify-center transition-colors&quot;&gt;
+                        ${task.completed ? '&lt;i class=&quot;ph ph-check text-xs font-bold&quot;&gt;&lt;/i&gt;' : ''}
+                    &lt;/button&gt;
+                    
+                    &lt;div class=&quot;flex-grow min-w-0&quot;&gt;
+                        &lt;p class=&quot;font-semibold text-lg truncate ${task.completed ? 'line-through text-stone-400 dark:text-stone-600' : ''}&quot;&gt;${task.name}&lt;/p&gt;
+                        &lt;div class=&quot;flex items-center gap-3 mt-1 text-xs&quot;&gt;
+                            &lt;span class=&quot;flex items-center gap-1 font-mono text-stone-500 dark:text-stone-400&quot;&gt;
+                                &lt;i class=&quot;ph ph-clock&quot;&gt;&lt;/i&gt; ${task.time}
+                            &lt;/span&gt;
+                            &lt;span class=&quot;px-2 py-0.5 rounded-full border ${getCategoryColor(task.category)}&quot;&gt;
+                                ${task.category}
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;button onclick=&quot;deleteTask('${task.id}')&quot; class=&quot;opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400 p-2 transition-opacity focus:opacity-100&quot; aria-label=&quot;Hapus&quot;&gt;
+                        &lt;i class=&quot;ph ph-trash text-lg&quot;&gt;&lt;/i&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            `).join('');
+        }
+
+        // --- Moment Management ---
+        const momentForm = document.getElementById('moment-form');
+        const momentContainer = document.getElementById('moment-container');
+
+        momentForm.addEventListener('submit', (e) =&gt; {
+            e.preventDefault();
+            const text = document.getElementById('moment-text').value;
+            const now = new Date();
+            const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            const newMoment = {
+                id: Date.now().toString(),
+                text,
+                time: timeString
+            };
+
+            // Add to beginning of array
+            moments.unshift(newMoment);
+            renderMoments();
+            momentForm.reset();
+        });
+
+        function deleteMoment(id) {
+            moments = moments.filter(m =&gt; m.id !== id);
+            renderMoments();
+        }
+
+        function renderMoments() {
+            if (moments.length === 0) {
+                momentContainer.innerHTML = `
+                    &lt;div class=&quot;text-center py-8 px-4 border border-dashed border-stone-300 dark:border-stone-700 rounded-3xl&quot;&gt;
+                        &lt;i class=&quot;ph ph-notebook text-4xl text-stone-300 dark:text-stone-600 mb-2&quot;&gt;&lt;/i&gt;
+                        &lt;p class=&quot;text-stone-500 dark:text-stone-400 text-sm&quot;&gt;Belum ada momen yang tercatat.&lt;/p&gt;
+                    &lt;/div&gt;
+                `;
+                return;
+            }
+
+            momentContainer.innerHTML = moments.map(moment =&gt; `
+                &lt;div class=&quot;p-5 border border-stone-200 dark:border-stone-800 bg-white/40 dark:bg-stone-900/40 rounded-2xl relative group&quot;&gt;
+                    &lt;button onclick=&quot;deleteMoment('${moment.id}')&quot; class=&quot;absolute top-3 right-3 opacity-0 group-hover:opacity-100 text-stone-400 hover:text-red-400 transition-opacity&quot; aria-label=&quot;Hapus&quot;&gt;
+                        &lt;i class=&quot;ph ph-x&quot;&gt;&lt;/i&gt;
+                    &lt;/button&gt;
+                    &lt;p class=&quot;text-stone-700 dark:text-stone-300 leading-relaxed text-sm pr-6 italic&quot;&gt;&quot;${moment.text}&quot;&lt;/p&gt;
+                    &lt;p class=&quot;text-xs text-stone-400 dark:text-stone-500 font-mono mt-3 text-right&quot;&gt;- ${moment.time}&lt;/p&gt;
+                &lt;/div&gt;
+            `).join('');
+        }
+
+        // Initial Render
+        renderTasks();
+        renderMoments();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+```</pre>
+</body>
+</html>
